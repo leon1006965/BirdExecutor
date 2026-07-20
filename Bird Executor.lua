@@ -1,0 +1,371 @@
+-- Services
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local targetKey = "FJ2F-G2DD-HJDS-DJG4"
+
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "BirdExecutorGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Helper function for rounded corners
+local function addCorner(parent, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
+    return corner
+end
+
+-- Helper function for padding
+local function addPadding(parent, top, bottom, left, right)
+    local padding = Instance.new("UIPadding")
+    padding.PaddingTop = UDim.new(0, top)
+    padding.PaddingBottom = UDim.new(0, bottom)
+    padding.PaddingLeft = UDim.new(0, left)
+    padding.PaddingRight = UDim.new(0, right)
+    padding.Parent = parent
+end
+
+--------------------------------------------------------------------------------
+-- 1. ACTIVATION FRAME (Key System)
+--------------------------------------------------------------------------------
+local ActivationFrame = Instance.new("Frame")
+ActivationFrame.Name = "ActivationFrame"
+ActivationFrame.Size = UDim2.new(0, 420, 0, 260)
+ActivationFrame.Position = UDim2.new(0.5, -210, 0.5, -130)
+ActivationFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 27)
+ActivationFrame.BorderSizePixel = 0
+ActivationFrame.Parent = ScreenGui
+addCorner(ActivationFrame, 12)
+
+local KeyTitle = Instance.new("TextLabel")
+KeyTitle.Size = UDim2.new(1, 0, 0, 50)
+KeyTitle.BackgroundTransparency = 1
+KeyTitle.Text = "Bird Executor Activation"
+KeyTitle.TextColor3 = Color3.fromRGB(240, 240, 245)
+KeyTitle.Font = Enum.Font.GothamBold
+KeyTitle.TextSize = 18
+KeyTitle.Parent = ActivationFrame
+
+local KeySubtitle = Instance.new("TextLabel")
+KeySubtitle.Size = UDim2.new(1, 0, 0, 20)
+KeySubtitle.Position = UDim2.new(0, 0, 0, 45)
+KeySubtitle.BackgroundTransparency = 1
+KeySubtitle.Text = "Please enter your activation key below"
+KeySubtitle.TextColor3 = Color3.fromRGB(160, 160, 165)
+KeySubtitle.Font = Enum.Font.Gotham
+KeySubtitle.TextSize = 13
+KeySubtitle.Parent = ActivationFrame
+
+-- Key Inputs Container (Grid Layout for the 4 boxes)
+local InputsContainer = Instance.new("Frame")
+InputsContainer.Size = UDim2.new(0, 340, 0, 45)
+InputsContainer.Position = UDim2.new(0.5, -170, 0, 95)
+InputsContainer.BackgroundTransparency = 1
+InputsContainer.Parent = ActivationFrame
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 8)
+UIListLayout.Parent = InputsContainer
+
+local boxes = {}
+for i = 1, 4 do
+    local box = Instance.new("TextBox")
+    box.Name = "Box" .. i
+    box.Size = UDim2.new(0, 65, 1, 0)
+    box.BackgroundColor3 = Color3.fromRGB(35, 35, 38)
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.Font = Enum.Font.GothamBold
+    box.TextSize = 14
+    box.Text = ""
+    box.PlaceholderText = "----"
+    box.PlaceholderColor3 = Color3.fromRGB(80, 80, 85)
+    box.ClearTextOnFocus = false
+    box.LayoutOrder = i * 2
+    addCorner(box, 6)
+    box.Parent = InputsContainer
+    table.insert(boxes, box)
+
+    if i < 4 then
+        local dash = Instance.new("TextLabel")
+        dash.Name = "Dash" .. i
+        dash.Size = UDim2.new(0, 12, 1, 0)
+        dash.BackgroundTransparency = 1
+        dash.Text = "-"
+        dash.TextColor3 = Color3.fromRGB(100, 100, 105)
+        dash.Font = Enum.Font.GothamBold
+        dash.TextSize = 16
+        dash.LayoutOrder = (i * 2) + 1
+        dash.Parent = InputsContainer
+    end
+end
+
+-- Auto-jumping logic for the inputs
+for i, box in ipairs(boxes) do
+    box:GetPropertyChangedSignal("Text"):Connect(function()
+        local txt = box.Text:upper():gsub("[^%w]", "") -- keep alphanumeric only
+        if #txt > 4 then
+            txt = string.sub(txt, 1, 4)
+        end
+        box.Text = txt
+
+        if #txt == 4 and i < 4 then
+            boxes[i+1]:CaptureFocus()
+        end
+    end)
+end
+
+local ErrorLabel = Instance.new("TextLabel")
+ErrorLabel.Size = UDim2.new(1, -40, 0, 30)
+ErrorLabel.Position = UDim2.new(0, 20, 0, 150)
+ErrorLabel.BackgroundTransparency = 1
+ErrorLabel.Text = ""
+ErrorLabel.TextColor3 = Color3.fromRGB(240, 75, 75)
+ErrorLabel.Font = Enum.Font.Gotham
+ErrorLabel.TextSize = 12
+ErrorLabel.TextWrapped = true
+ErrorLabel.Parent = ActivationFrame
+
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Size = UDim2.new(0, 140, 0, 38)
+SubmitBtn.Position = UDim2.new(0.5, -70, 0, 195)
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
+SubmitBtn.Text = "Activate"
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.TextSize = 14
+SubmitBtn.Parent = ActivationFrame
+addCorner(SubmitBtn, 6)
+
+--------------------------------------------------------------------------------
+-- 2. MAIN EXECUTOR WINDOW (Bird Executor)
+--------------------------------------------------------------------------------
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 520, 0, 340)
+MainFrame.Position = UDim2.new(0.5, -260, 0.5, -170)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 22)
+MainFrame.BorderSizePixel = 0
+MainFrame.Visible = false
+MainFrame.Parent = ScreenGui
+addCorner(MainFrame, 10)
+
+-- Top Dragging Bar
+local TopBar = Instance.new("Frame")
+TopBar.Size = UDim2.new(1, 0, 0, 40)
+TopBar.BackgroundColor3 = Color3.fromRGB(28, 28, 30)
+TopBar.BorderSizePixel = 0
+TopBar.Parent = MainFrame
+addCorner(TopBar, 10)
+
+-- Cover bottom corners of top bar to look seamless
+local Cover = Instance.new("Frame")
+Cover.Size = UDim2.new(1, 0, 0, 10)
+Cover.Position = UDim2.new(0, 0, 0, 30)
+Cover.BackgroundColor3 = Color3.fromRGB(28, 28, 30)
+Cover.BorderSizePixel = 0
+Cover.Parent = TopBar
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(0, 200, 1, 0)
+Title.Position = UDim2.new(0, 15, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Bird Executor"
+Title.TextColor3 = Color3.fromRGB(240, 240, 245)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 15
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = TopBar
+
+-- Dragging Functionality
+local dragging, dragInput, dragStart, startPos
+TopBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+TopBar.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Code Editor Input Area
+local EditorContainer = Instance.new("Frame")
+EditorContainer.Size = UDim2.new(1, -30, 1, -115)
+EditorContainer.Position = UDim2.new(0, 15, 0, 55)
+EditorContainer.BackgroundColor3 = Color3.fromRGB(28, 28, 30)
+EditorContainer.Parent = MainFrame
+addCorner(EditorContainer, 6)
+
+local CodeBox = Instance.new("TextBox")
+CodeBox.Size = UDim2.new(1, 0, 1, 0)
+CodeBox.BackgroundTransparency = 1
+CodeBox.Text = ""
+CodeBox.PlaceholderText = "-- Enter your localscripts code here..."
+CodeBox.PlaceholderColor3 = Color3.fromRGB(90, 90, 95)
+CodeBox.TextColor3 = Color3.fromRGB(230, 230, 235)
+CodeBox.Font = Enum.Font.Code
+CodeBox.TextSize = 13
+CodeBox.TextXAlignment = Enum.TextXAlignment.Left
+CodeBox.TextYAlignment = Enum.TextYAlignment.Top
+CodeBox.ClearTextOnFocus = false
+CodeBox.MultiLine = true
+CodeBox.Parent = EditorContainer
+addPadding(CodeBox, 8, 8, 8, 8)
+
+-- Control Buttons Bottom Bar
+local ButtonBar = Instance.new("Frame")
+ButtonBar.Size = UDim2.new(1, -30, 0, 45)
+ButtonBar.Position = UDim2.new(0, 15, 1, -50)
+ButtonBar.BackgroundTransparency = 1
+ButtonBar.Parent = MainFrame
+
+local ExecuteBtn = Instance.new("TextButton")
+ExecuteBtn.Size = UDim2.new(0, 100, 0, 35)
+ExecuteBtn.BackgroundColor3 = Color3.fromRGB(40, 165, 80)
+ExecuteBtn.Text = "Execute"
+ExecuteBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExecuteBtn.Font = Enum.Font.GothamBold
+ExecuteBtn.TextSize = 13
+ExecuteBtn.Parent = ButtonBar
+addCorner(ExecuteBtn, 5)
+
+local ClearBtn = Instance.new("TextButton")
+ClearBtn.Size = UDim2.new(0, 100, 0, 35)
+ClearBtn.Position = UDim2.new(0, 110, 0, 0)
+ClearBtn.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
+ClearBtn.Text = "Clear"
+ClearBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ClearBtn.Font = Enum.Font.GothamBold
+ClearBtn.TextSize = 13
+ClearBtn.Parent = ButtonBar
+addCorner(ClearBtn, 5)
+
+-- Profile Section Setup
+local ProfileContainer = Instance.new("Frame")
+ProfileContainer.Size = UDim2.new(0, 200, 1, 0)
+ProfileContainer.Position = UDim2.new(1, -200, 0, 0)
+ProfileContainer.BackgroundTransparency = 1
+ProfileContainer.Parent = ButtonBar
+
+local AvatarImage = Instance.new("ImageLabel")
+AvatarImage.Size = UDim2.new(0, 35, 0, 35)
+AvatarImage.Position = UDim2.new(1, -35, 0, 0)
+AvatarImage.BackgroundColor3 = Color3.fromRGB(40, 40, 42)
+AvatarImage.Parent = ProfileContainer
+addCorner(AvatarImage, 17) -- Circular frame
+
+local ProfileName = Instance.new("TextLabel")
+ProfileName.Size = UDim2.new(1, -45, 0, 18)
+ProfileName.Position = UDim2.new(0, 0, 0, 0)
+ProfileName.BackgroundTransparency = 1
+ProfileName.Text = player.DisplayName
+ProfileName.TextColor3 = Color3.fromRGB(240, 240, 245)
+ProfileName.Font = Enum.Font.GothamBold
+ProfileName.TextSize = 13
+ProfileName.TextXAlignment = Enum.TextXAlignment.Right
+ProfileName.Parent = ProfileContainer
+
+local ProfileUser = Instance.new("TextLabel")
+ProfileUser.Size = UDim2.new(1, -45, 0, 14)
+ProfileUser.Position = UDim2.new(0, 0, 0, 16)
+ProfileUser.BackgroundTransparency = 1
+ProfileUser.Text = "@" .. player.Name
+ProfileUser.TextColor3 = Color3.fromRGB(140, 140, 145)
+ProfileUser.Font = Enum.Font.Gotham
+ProfileUser.TextSize = 11
+ProfileUser.TextXAlignment = Enum.TextXAlignment.Right
+ProfileUser.Parent = ProfileContainer
+
+-- Safely pull standard thumbnail assets
+task.spawn(function()
+    pcall(function()
+        local userId = player.UserId
+        local thumbType = Enum.ThumbnailType.HeadShot
+        local thumbSize = Enum.ThumbnailSize.Size42x42
+        local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+        if isReady then
+            AvatarImage.Image = content
+        end
+    end)
+end)
+
+--------------------------------------------------------------------------------
+-- 3. FUNCTIONALITY & CORE BUTTON ACTIONS
+--------------------------------------------------------------------------------
+
+-- Key Validation Action
+SubmitBtn.MouseButton1Click:Connect(function()
+    local enteredKey = boxes[1].Text .. "-" .. boxes[2].Text .. "-" .. boxes[3].Text .. "-" .. boxes[4].Text
+    
+    if enteredKey == targetKey then
+        ErrorLabel.TextColor3 = Color3.fromRGB(75, 240, 75)
+        ErrorLabel.Text = "Success! Initializing Bird Executor..."
+        task.wait(0.6)
+        ActivationFrame.Visible = false
+        MainFrame.Visible = true
+    else
+        ErrorLabel.TextColor3 = Color3.fromRGB(240, 75, 75)
+        ErrorLabel.Text = "Incorrect Key Please Visit The Website To Get The Key"
+    end
+end)
+
+-- Clear Button Action
+ClearBtn.MouseButton1Click:Connect(function()
+    CodeBox.Text = ""
+end)
+
+-- Universal Execution Routine (Solara / Local Environment Compatible)
+ExecuteBtn.MouseButton1Click:Connect(function()
+    local sourceCode = CodeBox.Text
+    if sourceCode == "" then return end
+
+    -- Checks environment compatibility level for execution context
+    if loadstring then
+        local compiled, err = loadstring(sourceCode)
+        if compiled then
+            task.spawn(compiled)
+        else
+            warn("[Bird Executor Error]: " .. tostring(err))
+        end
+    elseif runcode then
+        -- Solara variant specific execution alternate
+        runcode(sourceCode)
+    else
+        -- Fallback default local processing routine
+        local runEvent = Instance.new("BindableEvent")
+        runEvent.Event:Connect(function()
+            local success, err = pcall(function()
+                -- Warning: standard game scripts cannot run raw code strings without loadstring enabled
+                error("Your current executor or environment configuration lacks a loadstring/runcode native runtime.")
+            end)
+            if not success then
+                warn(err)
+            end
+        end)
+        runEvent:Fire()
+        runEvent:Destroy()
+    end
+end)

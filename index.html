@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Executor - Premium Roblox Script Executor</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter & Fira Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.4);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.4);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="text-gray-200 overflow-x-hidden selection:bg-purple-500 selection:text-white">
+
+    <!-- Background Accents -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+    <div class="absolute bottom-10 left-1/3 w-80 h-80 bg-fuchsia-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-gray-950/75 border-b border-gray-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                        <!-- Custom SVG Bird Logo -->
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-gray-100 to-purple-400 bg-clip-text text-transparent">
+                        BIRD <span class="text-cyan-400">EXECUTOR</span>
+                    </span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">Features</a>
+                    <a href="#how-to-use" class="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">How To Use</a>
+                    <a href="#get-script" class="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">Loadstring</a>
+                    <a href="#faq" class="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">FAQ</a>
+                </div>
+
+                <!-- Action & Status Indicators -->
+                <div class="flex items-center space-x-4">
+                    <!-- Status Badge -->
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span class="w-2 h-2 mr-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+                        Undetected & Online
+                    </span>
+                    <a href="https://rekonise.com/enter-email-and-join-discord-server-to-get-bird-executor-activation-key-652af" target="_blank" rel="noopener noreferrer" 
+                       class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl hover:from-purple-500 hover:to-indigo-500 transition-all shadow-md hover:shadow-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-950">
+                        Get Key
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Showcase -->
+    <header class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <!-- Alert/Update Banner -->
+            <div class="inline-flex items-center space-x-2 bg-gray-900/60 border border-gray-800/80 px-4 py-1.5 rounded-full mb-8 hover:border-purple-500/40 transition-colors cursor-pointer">
+                <span class="bg-gradient-to-r from-purple-500 to-cyan-500 text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full text-white">NEW</span>
+                <span class="text-xs text-gray-300 font-medium">Bird Executor v2.4 Release & UNC Upgraded!</span>
+            </div>
+
+            <!-- Big Title -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+                Spread Your Wings With<br/>
+                <span class="bg-gradient-to-r from-purple-400 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent text-glow">
+                    Ultimate Execution Power
+                </span>
+            </h1>
+
+            <!-- Subtitle Description -->
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-400 mb-10 leading-relaxed">
+                Take full control of your Roblox gameplay. Run robust complex scripts seamlessly with high-grade security, unmatched UNC stability, and a fully-optimized built-in script suite.
+            </p>
+
+            <!-- Main Call-To-Actions -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="https://rekonise.com/enter-email-and-join-discord-server-to-get-bird-executor-activation-key-652af" target="_blank" rel="noopener noreferrer" 
+                   class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold hover:opacity-95 transition-all text-center flex items-center justify-center gap-2 glow-purple group">
+                    <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    Get Activation Key
+                </a>
+                <a href="#get-script" 
+                   class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gray-900 border border-gray-800 text-white font-bold hover:bg-gray-800/60 hover:border-gray-700 transition-all text-center flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Copy Loadstring Script
+                </a>
+            </div>
+
+            <!-- Dashboard Preview / Mock Screenshot -->
+            <div class="relative max-w-4xl mx-auto rounded-2xl border border-gray-800 bg-gray-950/80 p-2 shadow-2xl shadow-purple-500/5">
+                <div class="bg-gray-900/40 rounded-xl overflow-hidden aspect-[16/9] border border-gray-800/50 flex flex-col">
+                    <!-- Top Window Bar -->
+                    <div class="bg-gray-950 px-4 py-3 border-b border-gray-800/80 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500/70 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/70 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/70 inline-block"></span>
+                            <span class="text-xs text-gray-500 font-semibold pl-2 tracking-wide uppercase">BirdExecutor V2 - Dashboard</span>
+                        </div>
+                        <div class="text-xs text-cyan-400 font-mono flex items-center space-x-1.5 bg-cyan-950/30 border border-cyan-800/20 px-2 py-0.5 rounded">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                            <span>Status: Operational</span>
+                        </div>
+                    </div>
+                    <!-- Editor Body Simulated -->
+                    <div class="flex-1 grid grid-cols-4 text-left">
+                        <!-- Sidebar -->
+                        <div class="col-span-1 bg-gray-950/70 border-r border-gray-800/80 p-4 flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Navigation</div>
+                                <button class="w-full text-left text-sm py-2 px-3 rounded-lg bg-purple-500/10 border-l-2 border-purple-500 text-purple-300 font-medium flex items-center space-x-2">
+                                    <span>Executor</span>
+                                </button>
+                                <button class="w-full text-left text-sm py-2 px-3 rounded-lg text-gray-400 hover:text-gray-200 transition-colors flex items-center space-x-2">
+                                    <span>Script Hub</span>
+                                </button>
+                                <button class="w-full text-left text-sm py-2 px-3 rounded-lg text-gray-400 hover:text-gray-200 transition-colors flex items-center space-x-2">
+                                    <span>Settings</span>
+                                </button>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gray-900 border border-gray-800 text-[10px] text-gray-400 flex items-center space-x-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></div>
+                                <span>Key Premium Active</span>
+                            </div>
+                        </div>
+                        <!-- Code Space -->
+                        <div class="col-span-3 bg-gray-950 p-6 code-font text-sm text-gray-300 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-950/90 pointer-events-none"></div>
+                            <div class="space-y-1">
+                                <p class="text-gray-500">// Welcome to Bird Executor V2</p>
+                                <p class="text-cyan-400">local <span class="text-purple-400">BirdExecutor</span> = loadstring(game:HttpGet(<span class="text-emerald-300">"BirdEngine"</span>))()</p>
+                                <p class="text-purple-400">BirdExecutor:Initialize()</p>
+                                <p class="text-gray-400"><span class="text-amber-400">if</span> not BirdExecutor:CheckKey() <span class="text-amber-400">then</span></p>
+                                <p class="text-gray-400">&nbsp;&nbsp;&nbsp;&nbsp;BirdExecutor:PromptKeySystem()</p>
+                                <p class="text-gray-400"><span class="text-amber-400">else</span></p>
+                                <p class="text-gray-400">&nbsp;&nbsp;&nbsp;&nbsp;BirdExecutor:ExecuteScript(<span class="text-emerald-300">"UniversalBypass"</span>)</p>
+                                <p class="text-gray-400">&nbsp;&nbsp;&nbsp;&nbsp;BirdExecutor:Notify(<span class="text-emerald-300">"Successfully injected!"</span>, <span class="text-emerald-300">"Fly high"</span>, <span class="text-purple-400">5</span>)</p>
+                                <p class="text-gray-400"><span class="text-amber-400">end</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Interactive Loadstring & Copy Block -->
+    <section id="get-script" class="relative py-20 bg-gray-950 border-y border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Get The Official <span class="text-purple-400">Loadstring</span>
+                </h2>
+                <p class="mt-4 text-gray-400">
+                    Use our verified launch script. Click below to copy, open your Roblox injection client, paste and run! It is that easy.
+                </p>
+            </div>
+
+            <!-- Code Editor Styled Copy Box -->
+            <div class="max-w-4xl mx-auto bg-gray-900/60 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+                <!-- Header of Code Box -->
+                <div class="px-5 py-4 bg-gray-950 border-b border-gray-800/80 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-[8px]">&lt;&gt;</span>
+                        <span class="text-xs font-semibold text-gray-300 tracking-wide uppercase">Roblox Bootstrapper Code</span>
+                    </div>
+                    <span class="text-xs text-gray-400 font-mono flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                        <span>Latest Release</span>
+                    </span>
+                </div>
+
+                <!-- Code Workspace -->
+                <div class="p-6 md:p-8 bg-gray-950/40 relative group">
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span class="text-xs text-gray-500 font-mono">LUA</span>
+                    </div>
+                    <pre class="overflow-x-auto text-sm code-font leading-relaxed text-gray-300 whitespace-pre-wrap break-all pr-4"><code id="loadstring-code" class="text-cyan-300">loadstring(game:HttpGet("https://raw.githubusercontent.com/leon1006965/BirdExecutor/refs/heads/main/Bird%20Executor"))()</code></pre>
+                </div>
+
+                <!-- Footer Action Panel of Code Box -->
+                <div class="px-5 py-4 bg-gray-950/80 border-t border-gray-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs text-gray-400 text-center sm:text-left">
+                        Source hosted securely on official <strong class="text-gray-200">GitHub Repository</strong>.
+                    </div>
+                    <button onclick="copyToClipboard()" id="copy-btn" 
+                            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-600/15">
+                        <svg id="copy-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                        </svg>
+                        <span id="copy-text">Copy Script</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Warning/Advice Info -->
+            <div class="mt-8 max-w-xl mx-auto p-4 rounded-xl bg-purple-950/20 border border-purple-900/30 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+                <div class="w-10 h-10 shrink-0 bg-purple-500/10 border border-purple-500/20 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-purple-300">Require an Activation Key?</h4>
+                    <p class="text-xs text-gray-400 mt-0.5">Some scripts executed via Bird Executor may require a bypass key. Click the Activation Key button in the menu or below to quickly claim yours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section class="py-16 border-b border-gray-900 bg-gray-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <div class="text-3xl md:text-5xl font-extrabold text-purple-400">99.8%</div>
+                    <div class="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider mt-2">Execution Success Rate</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-5xl font-extrabold text-cyan-400">100%</div>
+                    <div class="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider mt-2">UNC UNC-Approved</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-5xl font-extrabold text-purple-400">150K+</div>
+                    <div class="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider mt-2">Active Script Executions</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-5xl font-extrabold text-cyan-400">&lt; 2ms</div>
+                    <div class="text-xs md:text-sm text-gray-400 font-medium uppercase tracking-wider mt-2">Execution Latency</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Why Choose <span class="text-cyan-400">Bird Executor</span>?
+                </h2>
+                <p class="mt-4 text-gray-400">
+                    A sleek Roblox executive suite backed by cutting-edge security architecture, high speed optimization, and dynamic API support.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="p-8 rounded-2xl bg-gray-900/40 border border-gray-800 hover:border-purple-500/30 transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Lightning-Fast Injector</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Say goodbye to delayed startups. Bird Executor launches and injects your chosen scripts instantly without affecting Roblox frame rates.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-8 rounded-2xl bg-gray-900/40 border border-gray-800 hover:border-cyan-500/30 transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-cyan-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">High Security Bypass</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Equipped with premium anti-detection measures that bypass Roblox security, keeping your accounts fully safe and secure.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="p-8 rounded-2xl bg-gray-900/40 border border-gray-800 hover:border-purple-500/30 transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Robust 100% UNC Support</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Offers comprehensive game API support, enabling high compatibility with massive hubs (such as Infinite Yield, Dex, and custom UI panels).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How To Use Section -->
+    <section id="how-to-use" class="py-20 bg-gray-950/60 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Getting Started in <span class="text-purple-400">3 Easy Steps</span>
+                </h2>
+                <p class="mt-4 text-gray-400">
+                    Follow this streamlined procedure to begin running your favorite custom Roblox configurations quickly.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 relative">
+                <!-- Connection Line for Desktop -->
+                <div class="hidden lg:block absolute top-1/3 left-[15%] right-[15%] h-0.5 bg-gradient-to-r from-purple-500/30 to-cyan-500/30 -z-10"></div>
+
+                <!-- Step 1 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-gray-900 border border-gray-800 text-purple-400 font-extrabold text-xl flex items-center justify-center mx-auto mb-6 group-hover:border-purple-500 group-hover:text-white transition-all shadow-lg shadow-purple-500/5">
+                        1
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Get Activation Key</h3>
+                    <p class="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed">
+                        Click the <strong class="text-purple-400">Activation Key</strong> button below to secure your daily execution license from the secure gateway.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-gray-900 border border-gray-800 text-cyan-400 font-extrabold text-xl flex items-center justify-center mx-auto mb-6 group-hover:border-cyan-500 group-hover:text-white transition-all shadow-lg shadow-cyan-500/5">
+                        2
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Copy Loadstring Script</h3>
+                    <p class="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed">
+                        Copy the verified bootstrapper loadstring script from our designated quick-copy area in section 1 above.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-gray-900 border border-gray-800 text-purple-400 font-extrabold text-xl flex items-center justify-center mx-auto mb-6 group-hover:border-purple-500 group-hover:text-white transition-all shadow-lg shadow-purple-500/5">
+                        3
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Inject & Enjoy</h3>
+                    <p class="text-sm text-gray-400 max-w-sm mx-auto leading-relaxed">
+                        Launch your game client, paste the loadstring code inside the executor command field, and hit run!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activation Key CTA Panel -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-950/20 to-cyan-950/20 pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="p-8 md:p-12 rounded-3xl bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+                <div class="space-y-4 max-w-xl text-center md:text-left">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-400/10 text-cyan-300 border border-cyan-400/20">
+                        License Key Gateway
+                    </span>
+                    <h2 class="text-2xl md:text-4xl font-extrabold text-white">
+                        Unlock Your Full Execution Authority Today
+                    </h2>
+                    <p class="text-sm md:text-base text-gray-400">
+                        Complete our quick key authentication (join Discord & enter email) to unlock the premium, unrestricted capabilities of Bird Executor. No paywalls, just absolute gameplay mastery.
+                    </p>
+                </div>
+                <div class="w-full md:w-auto shrink-0 flex flex-col sm:flex-row gap-3">
+                    <a href="https://rekonise.com/enter-email-and-join-discord-server-to-get-bird-executor-activation-key-652af" target="_blank" rel="noopener noreferrer" 
+                       class="px-8 py-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold transition-all duration-200 text-center shadow-lg shadow-cyan-500/10">
+                        Claim Activation Key
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-950">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Frequently Asked <span class="text-purple-400">Questions</span>
+                </h2>
+                <p class="mt-4 text-gray-400">
+                    Got queries about execution safety, compatibility, or key setups? Find your answers below.
+                </p>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div class="space-y-4">
+                <!-- Q1 -->
+                <div class="border border-gray-800 rounded-2xl bg-gray-900/30 overflow-hidden">
+                    <button class="w-full p-6 text-left font-bold text-white flex items-center justify-between hover:bg-gray-900/50 transition-colors" onclick="toggleFaq(1)">
+                        <span>Is Bird Executor completely safe and secure to utilize?</span>
+                        <svg id="faq-icon-1" class="w-5 h-5 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="faq-ans-1" class="hidden p-6 pt-0 text-sm text-gray-400 border-t border-gray-800/40 leading-relaxed">
+                        Yes. Bird Executor features comprehensive anti-detection layers and premium bypass wrappers to protect user credentials, prevent client-side flags, and preserve full hardware safety.
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="border border-gray-800 rounded-2xl bg-gray-900/30 overflow-hidden">
+                    <button class="w-full p-6 text-left font-bold text-white flex items-center justify-between hover:bg-gray-900/50 transition-colors" onclick="toggleFaq(2)">
+                        <span>Where can I find the activation key?</span>
+                        <svg id="faq-icon-2" class="w-5 h-5 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="faq-ans-2" class="hidden p-6 pt-0 text-sm text-gray-400 border-t border-gray-800/40 leading-relaxed">
+                        You can claim your key instantly by using the Rekonise gateway link in our main hero section or navbar. Complete a couple of verification prompts to support the development team and download your premium token.
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="border border-gray-800 rounded-2xl bg-gray-900/30 overflow-hidden">
+                    <button class="w-full p-6 text-left font-bold text-white flex items-center justify-between hover:bg-gray-900/50 transition-colors" onclick="toggleFaq(3)">
+                        <span>What is a Roblox Loadstring?</span>
+                        <svg id="faq-icon-3" class="w-5 h-5 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="faq-ans-3" class="hidden p-6 pt-0 text-sm text-gray-400 border-t border-gray-800/40 leading-relaxed">
+                        A loadstring is an execution method that downloads code dynamically from raw cloud storage (such as GitHub) rather than hosting local system files. This ensures your executor is running the newest code every single session without manually updating script elements.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Area -->
+    <footer class="bg-gray-950 border-t border-gray-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <div class="flex items-center justify-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold tracking-wider text-white">BIRD EXECUTOR</span>
+            </div>
+            <p class="text-xs text-gray-500 max-w-md mx-auto leading-relaxed">
+                Disclaimer: Bird Executor is an independent third-party simulation script toolkit. Roblox is a registered trademark of Roblox Corporation. We are not affiliated, associated, or endorsed by Roblox Corporation.
+            </p>
+            <div class="text-xs text-gray-600">
+                &copy; 2026 Bird Executor. All rights reserved. Made for optimal gameplay execution.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Toast Notification Box -->
+    <div id="custom-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none max-w-sm w-full bg-gray-900 border border-purple-500/30 rounded-2xl p-4 shadow-xl shadow-purple-500/5 flex items-center gap-4">
+        <div class="w-10 h-10 shrink-0 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <h4 class="text-sm font-bold text-white">Script Copied!</h4>
+            <p class="text-xs text-gray-400 mt-0.5">Loadstring is copied securely to your clipboard paste buffer.</p>
+        </div>
+    </div>
+
+    <!-- Scripting Interactions -->
+    <script>
+        // Copy to clipboard fallback mechanism
+        function copyToClipboard() {
+            const codeToCopy = document.getElementById("loadstring-code").innerText;
+            
+            // Create fallback textarea
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = codeToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                // Execute standard copy command (robust compatibility)
+                const success = document.execCommand('copy');
+                if (success) {
+                    showToast();
+                } else {
+                    console.error("Copy command was unsuccessful.");
+                }
+            } catch (err) {
+                console.error("Unable to copy", err);
+            }
+            
+            document.body.removeChild(tempTextArea);
+        }
+
+        // Show elegant custom toast instead of intrusive alert()
+        function showToast() {
+            const toast = document.getElementById("custom-toast");
+            const btnText = document.getElementById("copy-text");
+            const btnIcon = document.getElementById("copy-icon");
+            
+            // UI Visual Confirmation
+            btnText.innerText = "Copied!";
+            btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>`;
+            
+            // Activate Toast
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+            
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+                
+                // Restore button state
+                btnText.innerText = "Copy Script";
+                btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>`;
+            }, 3000);
+        }
+
+        // Interactive Accordion Controller
+        function toggleFaq(index) {
+            const answer = document.getElementById(`faq-ans-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            if (answer.classList.contains("hidden")) {
+                answer.classList.remove("hidden");
+                icon.classList.add("rotate-180");
+            } else {
+                answer.classList.add("hidden");
+                icon.classList.remove("rotate-180");
+            }
+        }
+    </script>
+</body>
+</html>
